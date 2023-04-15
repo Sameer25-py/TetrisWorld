@@ -6,10 +6,11 @@ namespace TetrisWorld
 {
     public class LetterPoolGenerator : MonoBehaviour
     {
-        public int          PoolLength = 60;
-        public Letters      Letters;
-        public List<Letter> LetterPool;
-        public Vector2      InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
+        public int                   PoolLength = 60;
+        public Letters               Letters;
+        public List<Letter>          LetterPool;
+        public Vector2               InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
+        public LetterBlockController LetterBlockController;
 
         private void GeneratePool()
         {
@@ -32,6 +33,7 @@ namespace TetrisWorld
         private void Start()
         {
             GeneratePool();
+            LetterBlockController.SetActiveBlock(GetAvailableLetter());
         }
 
         private void OnDestroy()
@@ -40,6 +42,20 @@ namespace TetrisWorld
             {
                 Destroy(letter.gameObject);
             }
+        }
+
+        public Letter GetAvailableLetter()
+        {
+            foreach (Letter letter in LetterPool)
+            {
+                if (!letter.gameObject.activeSelf)
+                {
+                    letter.gameObject.SetActive(true);
+                    return letter;
+                }
+            }
+
+            return null;
         }
     }
 }

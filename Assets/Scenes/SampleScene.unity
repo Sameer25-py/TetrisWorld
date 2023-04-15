@@ -427,6 +427,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028136367}
   m_CullTransparentMesh: 1
+--- !u!1 &1140698177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140698178}
+  - component: {fileID: 1140698179}
+  m_Layer: 0
+  m_Name: BlockController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140698178
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140698177}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9, y: 9, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1140698179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140698177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05055778c0ef4b88a333a278606c01dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Grid: {fileID: 1918591327}
+  ActiveLetterBlock: {fileID: 0}
+  currentIndex: {x: 0, y: 0}
+  currentPosition: {x: 0, y: 0}
+  FirstMove: 0
+  elapsedTime: 0
+  speed: 0.5
 --- !u!1 &1361359630
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1545045031
 Transform:
   m_ObjectHideFlags: 0
@@ -573,10 +624,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9ac52ab43b443b8e1a95de662011f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PoolLength: 60
+  PoolLength: 100
   Letters: {fileID: 11400000, guid: bf43bd37e5b62c74689787d0223de234, type: 2}
   LetterPool: []
   InitialPosition: {x: -0.009999983, y: 3.6900003}
+  LetterBlockController: {fileID: 1140698179}
 --- !u!1 &1918591326
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5639087440124d669a20b6650f04e5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rows: 10
+  Rows: 12
   Columns: 7
   SizeMultiplier: 5
   InitialPosition: {x: -2.38, y: -4.56}

@@ -40,6 +40,34 @@ namespace TetrisWorld
                 newOffset.y += Letters.LetterPrefab.transform.localScale.y * SizeMultiplier + PositionOffset.y;
             }
         }
+
+        public (Vector2, Vector2Int) GetLeft(Vector2Int index)
+        {
+            index = new Vector2Int(index.x, index.y - 1 >= 0 ? index.y - 1 : 0);
+            return (Grid[index.x, index.y]
+                .Position, index);
+        }
+
+        public (Vector2, Vector2Int) GetRight(Vector2Int index)
+        {
+            index = new Vector2Int(index.x, index.y + 1 < Columns ? index.y + 1 : Columns - 1);
+            return (Grid[index.x, index.y]
+                .Position, index);
+        }
+
+        public (Vector2, Vector2Int) GetDown(Vector2Int index = default)
+        {
+            if (index == default)
+            {
+                index = new Vector2Int(Rows - 1, 3);
+                return (Grid[Rows - 1, 3]
+                    .Position, index);
+            }
+
+            index = new Vector2Int(index.x - 1 > 0 ? index.x - 1 : 0, index.y);
+            return (Grid[index.x, index.y]
+                .Position, index);
+        }
     }
 
     [Serializable]
