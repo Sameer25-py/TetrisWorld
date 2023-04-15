@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39bde71a57b54fa4a90a38b67ac95f62, type: 3}
+  m_Name: Letters
+  m_EditorClassIdentifier: 
+  LetterSprites:
+  - {fileID: 21300000, guid: 963499e48d511b4499fdf61ed30fd0ec, type: 3}
+  - {fileID: 21300000, guid: 503e258e6fe8ba9449ec3f04b74425fd, type: 3}
+  - {fileID: 21300000, guid: e077ee42cbd415547ad0b3def9d2a661, type: 3}
+  - {fileID: 21300000, guid: c7d3df6cc5c5373458b69ded611bd17e, type: 3}
+  - {fileID: 21300000, guid: 097cc6f33d5c0fe418f7d721cff6d9da, type: 3}
+  - {fileID: 21300000, guid: e38b96b1567ce4445afb668f58f7bde2, type: 3}
+  - {fileID: 21300000, guid: 5ef008518c0f7e14c98218ec742fe444, type: 3}
+  - {fileID: 21300000, guid: 6eda67d64c607d640ad17c4e3b4423cf, type: 3}
+  - {fileID: 21300000, guid: 40ced8bb2a31e664994297f42ac98bfe, type: 3}
+  - {fileID: 21300000, guid: 39328baa29a2d87429006bade9376b2b, type: 3}
+  - {fileID: 21300000, guid: 1fa67efe2b7a96c49a5400a2cc4a250b, type: 3}
+  - {fileID: 21300000, guid: f0b775b99cadef940b81d4e9e1a49e8b, type: 3}
+  - {fileID: 21300000, guid: 2d1af4e3d2f6f46468acea725648d4cd, type: 3}
+  - {fileID: 21300000, guid: 9f47e6fd8f710224daf1c33eb9dbfe78, type: 3}
+  - {fileID: 21300000, guid: 1f93daa84c558cf44b13250c20d15984, type: 3}
+  - {fileID: 21300000, guid: f8dfc92c72fb9dd4290fb59873f725c9, type: 3}
+  - {fileID: 21300000, guid: 77b6749bd51a6ff42aed21a28316444a, type: 3}
+  - {fileID: 21300000, guid: 0155d47ae0758854fa9f4eceb8fe0a63, type: 3}
+  - {fileID: 21300000, guid: 7be1e7ffef174c1468af5b32f7b47f59, type: 3}
+  - {fileID: 21300000, guid: d105331bb8d290240abdb6e63dd99a64, type: 3}
+  - {fileID: 21300000, guid: b86320bc53bc8574b9ecf14f5175911d, type: 3}
+  - {fileID: 21300000, guid: 79efe73d9c6bcbc468934ee0b49d10c1, type: 3}
+  - {fileID: 21300000, guid: 1e51939749c26a34eb3e90094e80058d, type: 3}
+  - {fileID: 21300000, guid: 97b037d6ab579fd4290d52b6dfc79851, type: 3}
+  - {fileID: 21300000, guid: 05132c19411127c44ade4e2cd6c5dfab, type: 3}
+  - {fileID: 21300000, guid: c2e04e045f0fe624384246e952e44992, type: 3}
+  LetterPrefab: {fileID: 1704601712643679157, guid: a76e15333f5911041aaaf88abe00908a, type: 3}
