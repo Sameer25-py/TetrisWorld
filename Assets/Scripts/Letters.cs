@@ -8,5 +8,11 @@ namespace TetrisWorld
     {
         public List<Sprite> LetterSprites;
         public GameObject   LetterPrefab;
+
+
+        public Sprite GetRandomLetterSprite()
+        {
+            return LetterSprites[Random.Range(0, LetterSprites.Count)];
+        }
     }
 }
