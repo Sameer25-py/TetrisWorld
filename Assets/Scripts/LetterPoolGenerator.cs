@@ -9,13 +9,14 @@ namespace TetrisWorld
         public int          PoolLength = 60;
         public Letters      Letters;
         public List<Letter> LetterPool;
+        public Vector2      InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
 
         private void GeneratePool()
         {
             LetterPool = new();
             for (int i = 0; i < PoolLength; i++)
             {
-                GameObject letterObj = Instantiate(Letters.LetterPrefab);
+                GameObject letterObj = Instantiate(Letters.LetterPrefab, InitialPosition, Quaternion.identity);
                 letterObj.SetActive(false);
                 Letter letter             = letterObj.GetComponent<Letter>();
                 Sprite randomLetterSprite = Letters.GetRandomLetterSprite();

@@ -31,6 +31,8 @@ namespace TetrisWorld
                         Position = newOffset,
                         Letter   = null
                     };
+                    // Instantiate(Letters.LetterPrefab, Grid[i, j]
+                    //     .Position, Quaternion.identity);
                     newOffset.x += Letters.LetterPrefab.transform.localScale.x * SizeMultiplier + PositionOffset.x;
                 }
 
