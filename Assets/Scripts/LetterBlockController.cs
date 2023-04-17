@@ -36,6 +36,7 @@ namespace TetrisWorld
                 {
                     Grid.AddLetterToGrid(LastIndex,
                         ActiveLetterBlock);
+                    elapsedTime = 0f;
                     return;
                 }
                 CurrentPosition              = ActiveLetterBlock.transform.position;
@@ -48,7 +49,7 @@ namespace TetrisWorld
                 (NextPosition, CurrentIndex) = Grid.GetLeft(CurrentIndex);
             }
 
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 (NextPosition, CurrentIndex) = Grid.GetRight(CurrentIndex);
             }

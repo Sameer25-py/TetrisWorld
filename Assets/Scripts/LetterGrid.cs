@@ -46,49 +46,60 @@ namespace TetrisWorld
 
         public (Vector2, Vector2Int) GetLeft(Vector2Int index)
         {
-            index = new Vector2Int(index.x, index.y - 1 >= 0 ? index.y - 1 : 0);
-            return (Grid[index.x, index.y]
-                .Position, index);
+            Vector2Int newIndex = new Vector2Int(index.x, index.y - 1 >= 0 ? index.y - 1 : 0);
+            if (Grid[newIndex.x, newIndex.y]
+                .Letter)
+            {
+                newIndex = index;
+            }
+
+            return (Grid[newIndex.x, newIndex.y]
+                .Position, newIndex);
         }
 
         public (Vector2, Vector2Int) GetRight(Vector2Int index)
         {
-            index = new Vector2Int(index.x, index.y + 1 < Columns ? index.y + 1 : Columns - 1);
-            return (Grid[index.x, index.y]
-                .Position, index);
+            Vector2Int newIndex = new Vector2Int(index.x, index.y + 1 < Columns ? index.y + 1 : Columns - 1);
+            if (Grid[newIndex.x, newIndex.y]
+                .Letter)
+            {
+                newIndex = index;
+            }
+
+            return (Grid[newIndex.x, newIndex.y]
+                .Position, newIndex);
         }
 
-        public (Vector2, Vector2Int,bool) GetDown(bool isFirstMove,Vector2Int index)
+        public (Vector2, Vector2Int, bool) GetDown(bool isFirstMove, Vector2Int index)
         {
             if (isFirstMove)
             {
                 index = new Vector2Int(Rows - 1, 3);
                 return (Grid[Rows - 1, 3]
-                    .Position, index,true);
+                    .Position, index, true);
             }
 
             Vector2Int newIndex = new Vector2Int(index.x - 1 > 0 ? index.x - 1 : 0, index.y);
-            
+
             bool isValidMove = !(index.x == 0 || Grid[newIndex.x, newIndex.y]
                 .Letter);
             return (Grid[newIndex.x, newIndex.y]
-                .Position, newIndex,isValidMove);
+                .Position, newIndex, isValidMove);
         }
-        
-        public void AddLetterToGrid(Vector2Int index,Letter letter)
-        {   
-            Debug.Log(index);
+
+        public void AddLetterToGrid(Vector2Int index, Letter letter)
+        {
             if ((index.x < Rows && index.x >= 0) && (index.y < Columns && index.y >= 0) && !Grid[index.x, index.y]
                     .Letter)
             {
                 Grid[index.x, index.y]
                     .Letter = letter;
-                
+
                 LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
             }
         }
     }
-    
+
 
     [Serializable]
     public class LetterGridCell
