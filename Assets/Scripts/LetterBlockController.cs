@@ -7,7 +7,7 @@ namespace TetrisWorld
     {
         public LetterGrid Grid;
         public Letter     ActiveLetterBlock = null;
-        public Vector2Int CurrentIndex;
+        public Vector2Int CurrentIndex,LastIndex;
         public Vector2    CurrentPosition, NextPosition;
         public bool       FirstMove   = true;
         public float      elapsedTime = 0f;
@@ -20,6 +20,7 @@ namespace TetrisWorld
             FirstMove         = true;
             CurrentPosition   = letter.transform.position;
             NextPosition      = CurrentPosition;
+            elapsedTime       = 0f;
         }
 
         private void Update()
@@ -29,7 +30,14 @@ namespace TetrisWorld
             elapsedTime += Time.deltaTime;
             if (elapsedTime > speed)
             {
-                (NextPosition, CurrentIndex) = Grid.GetDown(FirstMove,CurrentIndex);
+                bool isValidMove = true;
+                (NextPosition, CurrentIndex,isValidMove) = Grid.GetDown(FirstMove,CurrentIndex);
+                if (!isValidMove)
+                {
+                    Grid.AddLetterToGrid(LastIndex,
+                        ActiveLetterBlock);
+                    return;
+                }
                 CurrentPosition              = ActiveLetterBlock.transform.position;
                 elapsedTime                  = 0f;
                 FirstMove                    = false;
@@ -46,6 +54,7 @@ namespace TetrisWorld
             }
             
             ActiveLetterBlock.transform.position = NextPosition;
+            LastIndex                            = CurrentIndex;
         }
     }
 }

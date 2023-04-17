@@ -473,11 +473,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Grid: {fileID: 1918591327}
   ActiveLetterBlock: {fileID: 0}
-  currentIndex: {x: 0, y: 0}
-  currentPosition: {x: 0, y: 0}
+  CurrentIndex: {x: 0, y: 0}
+  CurrentPosition: {x: 0, y: 0}
+  NextPosition: {x: 0, y: 0}
   FirstMove: 0
   elapsedTime: 0
-  speed: 0.5
+  speed: 0.1
 --- !u!1 &1361359630
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +665,8 @@ MonoBehaviour:
   InitialPosition: {x: -2.38, y: -4.56}
   PositionOffset: {x: 0.04, y: 0}
   Letters: {fileID: 11400000, guid: bf43bd37e5b62c74689787d0223de234, type: 2}
+  LetterBlockController: {fileID: 1140698179}
+  LetterPoolGenerator: {fileID: 1545045032}
 --- !u!4 &1918591328
 Transform:
   m_ObjectHideFlags: 0
