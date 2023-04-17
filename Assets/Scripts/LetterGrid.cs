@@ -95,6 +95,17 @@ namespace TetrisWorld
                 Grid[index.x, index.y]
                     .Letter = letter;
 
+                for (int i = 0; i < Columns; i++)
+                {
+                    if (Grid[Rows - 1, i]
+                        .Letter)
+                    {
+                        GenerateGrid();
+                        LetterPoolGenerator.ResetPool();
+                        break;
+                    }
+                }
+
                 LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
             }
         }

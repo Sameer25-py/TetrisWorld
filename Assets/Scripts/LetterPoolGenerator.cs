@@ -57,5 +57,17 @@ namespace TetrisWorld
 
             return null;
         }
+
+        public void ResetPool()
+        {
+            foreach (GameObject letterObj in from letter in LetterPool
+                     let letterObj = letter.gameObject
+                     where letter.gameObject.activeSelf
+                     select letterObj)
+            {
+                letterObj.SetActive(false);
+                letterObj.transform.position = InitialPosition;
+            }
+        }
     }
 }
