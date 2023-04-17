@@ -55,9 +55,9 @@ namespace TetrisWorld
                 .Position, index);
         }
 
-        public (Vector2, Vector2Int) GetDown(Vector2Int index = default)
+        public (Vector2, Vector2Int) GetDown(bool isFirstMove,Vector2Int index)
         {
-            if (index == default)
+            if (isFirstMove)
             {
                 index = new Vector2Int(Rows - 1, 3);
                 return (Grid[Rows - 1, 3]

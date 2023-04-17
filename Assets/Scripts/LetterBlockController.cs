@@ -25,22 +25,14 @@ namespace TetrisWorld
         private void Update()
         {
             if (!ActiveLetterBlock) return;
-
-            if (FirstMove)
-            {
-                (NextPosition, CurrentIndex)         = Grid.GetDown();
-                ActiveLetterBlock.transform.position = NextPosition;
-                CurrentPosition                      = NextPosition;
-                FirstMove                            = false;
-                return;
-            }
             
             elapsedTime += Time.deltaTime;
             if (elapsedTime > speed)
             {
-                (NextPosition, CurrentIndex) = Grid.GetDown(CurrentIndex);
+                (NextPosition, CurrentIndex) = Grid.GetDown(FirstMove,CurrentIndex);
                 CurrentPosition              = ActiveLetterBlock.transform.position;
                 elapsedTime                  = 0f;
+                FirstMove                    = false;
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
