@@ -26,7 +26,7 @@ namespace TetrisWorld
         private void Update()
         {
             if (!ActiveLetterBlock) return;
-
+            
             elapsedTime += Time.deltaTime;
             if (elapsedTime > speed)
             {
@@ -43,6 +43,7 @@ namespace TetrisWorld
                 CurrentPosition = ActiveLetterBlock.transform.position;
                 elapsedTime     = 0f;
                 FirstMove       = false;
+                speed           = 0.5f;
             }
 
             if (!FirstMove)
@@ -55,6 +56,10 @@ namespace TetrisWorld
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     (NextPosition, CurrentIndex) = Grid.GetRight(CurrentIndex);
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    speed       = 0.1f;
                 }
             }
 
