@@ -7,7 +7,7 @@ namespace TetrisWorld
     {
         public LetterGrid Grid;
         public Letter     ActiveLetterBlock = null;
-        public Vector2Int CurrentIndex,LastIndex;
+        public Vector2Int CurrentIndex,    LastIndex;
         public Vector2    CurrentPosition, NextPosition;
         public bool       FirstMove   = true;
         public float      elapsedTime = 0f;
@@ -26,12 +26,12 @@ namespace TetrisWorld
         private void Update()
         {
             if (!ActiveLetterBlock) return;
-            
+
             elapsedTime += Time.deltaTime;
             if (elapsedTime > speed)
             {
                 bool isValidMove = true;
-                (NextPosition, CurrentIndex,isValidMove) = Grid.GetDown(FirstMove,CurrentIndex);
+                (NextPosition, CurrentIndex, isValidMove) = Grid.GetDown(FirstMove, CurrentIndex);
                 if (!isValidMove)
                 {
                     Grid.AddLetterToGrid(LastIndex,
@@ -39,21 +39,25 @@ namespace TetrisWorld
                     elapsedTime = 0f;
                     return;
                 }
-                CurrentPosition              = ActiveLetterBlock.transform.position;
-                elapsedTime                  = 0f;
-                FirstMove                    = false;
+
+                CurrentPosition = ActiveLetterBlock.transform.position;
+                elapsedTime     = 0f;
+                FirstMove       = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (!FirstMove)
             {
-                (NextPosition, CurrentIndex) = Grid.GetLeft(CurrentIndex);
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    (NextPosition, CurrentIndex) = Grid.GetLeft(CurrentIndex);
+                }
+
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    (NextPosition, CurrentIndex) = Grid.GetRight(CurrentIndex);
+                }
             }
 
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                (NextPosition, CurrentIndex) = Grid.GetRight(CurrentIndex);
-            }
-            
             ActiveLetterBlock.transform.position = NextPosition;
             LastIndex                            = CurrentIndex;
         }
