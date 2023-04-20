@@ -13,6 +13,8 @@ namespace TetrisWorld
         public float      elapsedTime = 0f;
         public float      speed       = 0.5f;
 
+        private bool _isMoveLeft, _isMoveDown, _isMoveRight;
+
 
         public void SetActiveBlock(Letter letter)
         {
@@ -21,6 +23,21 @@ namespace TetrisWorld
             CurrentPosition   = letter.transform.position;
             NextPosition      = CurrentPosition;
             elapsedTime       = 0f;
+        }
+
+        public void MoveDown()
+        {
+            _isMoveDown = true;
+        }
+
+        public void MoveLeft()
+        {
+            _isMoveLeft = true;
+        }
+
+        public void MoveRight()
+        {
+            _isMoveRight = true;
         }
 
         private void Update()
@@ -48,18 +65,21 @@ namespace TetrisWorld
 
             if (!FirstMove)
             {
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                if (_isMoveLeft)
                 {
                     (NextPosition, CurrentIndex) = Grid.GetLeft(CurrentIndex);
+                    _isMoveLeft                  = false;
                 }
 
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                else if (_isMoveRight)
                 {
                     (NextPosition, CurrentIndex) = Grid.GetRight(CurrentIndex);
+                    _isMoveRight                 = false;
                 }
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                else if (_isMoveDown)
                 {
                     speed       = 0.1f;
+                    _isMoveDown = false;
                 }
             }
 
