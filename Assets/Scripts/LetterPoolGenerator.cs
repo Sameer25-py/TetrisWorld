@@ -13,6 +13,8 @@ namespace TetrisWorld
         public LetterBlockController LetterBlockController;
         public WordsDictionary       WordsDictionary;
 
+        public int PoolIndex = 0;
+
         private void GeneratePool()
         {
             List<string> randomWords = WordsDictionary.GetRandomWords(PoolLength);
@@ -53,20 +55,18 @@ namespace TetrisWorld
 
         public Letter GetAvailableLetter()
         {
-            foreach (Letter letter in LetterPool)
+            if (PoolIndex >= LetterPool.Count)
             {
-                if (!letter.gameObject.activeSelf)
-                {
-                    letter.gameObject.SetActive(true);
-                    return letter;
-                }
+                PoolIndex = 0;
             }
-
-            return null;
+            Letter letter = LetterPool[PoolIndex ++];
+            letter.gameObject.SetActive(true);
+            return letter;
         }
 
         public void AddLetterBackToPool(Letter letter)
-        {
+        {   
+            letter.transform.SetAsLastSibling();
             letter.gameObject.SetActive(false);
             letter.transform.position = InitialPosition;
         }
