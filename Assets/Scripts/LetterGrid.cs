@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace TetrisWorld
@@ -15,6 +18,7 @@ namespace TetrisWorld
 
         public LetterBlockController LetterBlockController;
         public LetterPoolGenerator   LetterPoolGenerator;
+        public LetterPatternChecker  LetterPatternChecker;
 
         private void Start()
         {
@@ -87,6 +91,67 @@ namespace TetrisWorld
                 .Position, newIndex, isValidMove);
         }
 
+        private List<Letter> GetRowAroundIndex(int rowIndex)
+        {
+            List<Letter> letters = new();
+            for (int i = 0; i < Columns; i++)
+            {
+                letters.Add(Grid[rowIndex, i]
+                    .Letter);
+            }
+
+            return letters;
+        }
+
+        private List<Letter> GetColumnAroundIndex(int columnIndex)
+        {
+            List<Letter> letters = new();
+            for (int i = 0; i < Rows - 1; i++)
+            {
+                letters.Add(Grid[i,columnIndex].Letter);
+            }
+
+            return letters;
+        }
+
+        private void RemoveMatchedPatternRow(List<Pattern> matchedPatterns,int rowIndex)
+        {
+            if (matchedPatterns.Count > 0)
+            {
+                foreach (Pattern pattern in matchedPatterns)
+                {
+                    foreach (Tuple<Letter, int> tuple in pattern.Combination)
+                    {
+                        if (tuple.Item1)
+                        {
+                            Grid[rowIndex, tuple.Item2]
+                                .Letter = null;
+                            LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
+                        }
+                    }
+                }
+            }
+        }
+        
+        private void RemoveMatchedPatternColumn(List<Pattern> matchedPatterns,int columnIndex)
+        {
+            if (matchedPatterns.Count > 0)
+            {
+                foreach (Pattern pattern in matchedPatterns)
+                {
+                    foreach (Tuple<Letter, int> tuple in pattern.Combination)
+                    {
+                        if (tuple.Item1)
+                        {
+                            Grid[tuple.Item2,columnIndex]
+                                .Letter = null;
+                            LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
+                        }
+                    }
+                }
+            }
+        }
+        
         public void AddLetterToGrid(Vector2Int index, Letter letter)
         {
             if ((index.x < Rows && index.x >= 0) && (index.y < Columns && index.y >= 0) && !Grid[index.x, index.y]
@@ -95,6 +160,12 @@ namespace TetrisWorld
                 Grid[index.x, index.y]
                     .Letter = letter;
 
+
+                var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
+                var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
+                RemoveMatchedPatternRow(matchedPatternRow,index.x);
+                RemoveMatchedPatternColumn(matchedPatternColumn,index.y);
+                
                 for (int i = 0; i < Columns; i++)
                 {
                     if (Grid[Rows - 1, i]

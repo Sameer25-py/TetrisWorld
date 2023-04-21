@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d954e041e3445fbdce8f401e23961f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ValidPattern: AAA
+  WordsDictionary: {fileID: 11400000, guid: 428abc5a9e92a2d4caed489f1f469a6d, type: 2}
 --- !u!1 &996029883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,6 +1216,7 @@ MonoBehaviour:
   Letters: {fileID: 11400000, guid: bf43bd37e5b62c74689787d0223de234, type: 2}
   LetterBlockController: {fileID: 1140698179}
   LetterPoolGenerator: {fileID: 1545045032}
+  LetterPatternChecker: {fileID: 974202797}
 --- !u!4 &1918591328
 Transform:
   m_ObjectHideFlags: 0

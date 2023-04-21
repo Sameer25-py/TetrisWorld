@@ -16,35 +16,16 @@ namespace TetrisWorld
         private void GeneratePool()
         {
             LetterPool = new();
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < PoolLength; i++)
             {
                 GameObject letterObj = Instantiate(Letters.LetterPrefab, InitialPosition, Quaternion.identity);
                 letterObj.SetActive(false);
                 Letter letter             = letterObj.GetComponent<Letter>();
-                Sprite randomLetterSprite = Letters.LetterSprites[i];
+                Sprite randomLetterSprite = Letters.LetterSprites[Random.Range(0, Letters.LetterSprites.Count)];
                 letter.PrefabLetter = randomLetterSprite.name;
                 letterObj.GetComponent<SpriteRenderer>()
                     .sprite = randomLetterSprite;
                 LetterPool.Add(letter);
-            }
-
-            List<Letter> letters = new();
-            for (int i = 0; i < 7; i++)
-            {
-                letters.Add(GetAvailableLetter());
-            }
-
-            var x = PatternChecker.GenerateCombinations(letters);
-            foreach (Pattern pattern in x)
-            {
-                string word = "";
-                foreach (var combination in pattern.Combination)
-                {
-                    word += (combination.Item2 + " " + combination.Item1.PrefabLetter + " ");
-                }
-                
-                Debug.Log(word);
-                word = "";
             }
         }
 
@@ -74,6 +55,12 @@ namespace TetrisWorld
             }
 
             return null;
+        }
+
+        public void AddLetterBackToPool(Letter letter)
+        {
+            letter.gameObject.SetActive(false);
+            letter.transform.position = InitialPosition;
         }
 
         public void ResetPool()
