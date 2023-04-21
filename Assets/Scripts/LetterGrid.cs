@@ -108,13 +108,14 @@ namespace TetrisWorld
             List<Letter> letters = new();
             for (int i = 0; i < Rows - 1; i++)
             {
-                letters.Add(Grid[i,columnIndex].Letter);
+                letters.Add(Grid[i, columnIndex]
+                    .Letter);
             }
 
             return letters;
         }
 
-        private void RemoveMatchedPatternRow(List<Pattern> matchedPatterns,int rowIndex)
+        private void RemoveMatchedPatternRow(List<Pattern> matchedPatterns, int rowIndex)
         {
             if (matchedPatterns.Count > 0)
             {
@@ -132,8 +133,8 @@ namespace TetrisWorld
                 }
             }
         }
-        
-        private void RemoveMatchedPatternColumn(List<Pattern> matchedPatterns,int columnIndex)
+
+        private void RemoveMatchedPatternColumn(List<Pattern> matchedPatterns, int columnIndex)
         {
             if (matchedPatterns.Count > 0)
             {
@@ -143,7 +144,7 @@ namespace TetrisWorld
                     {
                         if (tuple.Item1)
                         {
-                            Grid[tuple.Item2,columnIndex]
+                            Grid[tuple.Item2, columnIndex]
                                 .Letter = null;
                             LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
                         }
@@ -151,7 +152,35 @@ namespace TetrisWorld
                 }
             }
         }
-        
+
+        private void RearrangeGrid()
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    if (!Grid[i, j]
+                            .Letter)
+                    {
+                        for (int k = i + 1; k < Rows; k++)
+                        {
+                            if (Grid[k,j].Letter)
+                            {
+                                Grid[k - 1, j]
+                                    .Letter = Grid[k, j]
+                                    .Letter;
+                                Grid[k - 1, j]
+                                    .Letter.transform.position = Grid[k - 1, j]
+                                    .Position;
+                                Grid[k, j]
+                                    .Letter = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public void AddLetterToGrid(Vector2Int index, Letter letter)
         {
             if ((index.x < Rows && index.x >= 0) && (index.y < Columns && index.y >= 0) && !Grid[index.x, index.y]
@@ -159,12 +188,13 @@ namespace TetrisWorld
             {
                 Grid[index.x, index.y]
                     .Letter = letter;
-                
+
                 var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
                 var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
-                RemoveMatchedPatternRow(matchedPatternRow,index.x);
-                RemoveMatchedPatternColumn(matchedPatternColumn,index.y);
-                
+                RemoveMatchedPatternRow(matchedPatternRow, index.x);
+                RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
+                RearrangeGrid();
+
                 for (int i = 0; i < Columns; i++)
                 {
                     if (Grid[Rows - 1, i]
