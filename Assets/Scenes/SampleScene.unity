@@ -1045,7 +1045,7 @@ MonoBehaviour:
   LetterPool: []
   InitialPosition: {x: -0.009999983, y: 3.6900003}
   LetterBlockController: {fileID: 1140698179}
-  PatternChecker: {fileID: 974202797}
+  WordsDictionary: {fileID: 11400000, guid: 428abc5a9e92a2d4caed489f1f469a6d, type: 2}
 --- !u!1 &1685615477
 GameObject:
   m_ObjectHideFlags: 0

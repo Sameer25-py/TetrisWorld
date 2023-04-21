@@ -14,5 +14,18 @@ namespace TetrisWorld
         {
             return LetterSprites[Random.Range(0, LetterSprites.Count)];
         }
+
+        public Sprite GetSpriteByName(string name)
+        {
+            foreach (Sprite letterSprite in LetterSprites)
+            {
+                if (letterSprite.name == name)
+                {
+                    return letterSprite;
+                }
+            }
+
+            return GetRandomLetterSprite();
+        }
     }
 }

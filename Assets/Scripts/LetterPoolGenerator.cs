@@ -11,21 +11,29 @@ namespace TetrisWorld
         public List<Letter>          LetterPool;
         public Vector2               InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
         public LetterBlockController LetterBlockController;
-        public LetterPatternChecker  PatternChecker;
+        public WordsDictionary       WordsDictionary;
 
         private void GeneratePool()
         {
+            List<string> randomWords = WordsDictionary.GetRandomWords(PoolLength);
             LetterPool = new();
-            for (int i = 0; i < PoolLength; i++)
+
+            for (int i = 0; i < randomWords.Count; i++)
             {
-                GameObject letterObj = Instantiate(Letters.LetterPrefab, InitialPosition, Quaternion.identity);
-                letterObj.SetActive(false);
-                Letter letter             = letterObj.GetComponent<Letter>();
-                Sprite randomLetterSprite = Letters.LetterSprites[Random.Range(0, Letters.LetterSprites.Count)];
-                letter.PrefabLetter = randomLetterSprite.name;
-                letterObj.GetComponent<SpriteRenderer>()
-                    .sprite = randomLetterSprite;
-                LetterPool.Add(letter);
+                for (int j = 0;
+                     j < randomWords[i]
+                         .Length;
+                     j++)
+                {
+                    GameObject letterObj = Instantiate(Letters.LetterPrefab, InitialPosition, Quaternion.identity);
+                    letterObj.SetActive(false);
+                    Letter letter = letterObj.GetComponent<Letter>();
+                    Sprite sprite = Letters.GetSpriteByName(randomWords[i][j].ToString());
+                    letter.PrefabLetter = sprite.name;
+                    letterObj.GetComponent<SpriteRenderer>()
+                        .sprite = sprite;
+                    LetterPool.Add(letter);
+                }
             }
         }
 

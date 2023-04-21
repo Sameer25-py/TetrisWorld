@@ -159,8 +159,7 @@ namespace TetrisWorld
             {
                 Grid[index.x, index.y]
                     .Letter = letter;
-
-
+                
                 var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
                 var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
                 RemoveMatchedPatternRow(matchedPatternRow,index.x);
