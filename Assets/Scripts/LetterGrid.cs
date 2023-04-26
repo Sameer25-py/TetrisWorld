@@ -20,13 +20,27 @@ namespace TetrisWorld
         public LetterPoolGenerator   LetterPoolGenerator;
         public LetterPatternChecker  LetterPatternChecker;
         public Score                 Score;
+        public Timer                 Timer;
         public int                   TotalScore = 0;
 
-        private void Start()
+        private void StartGame()
         {
             GenerateGrid();
             TotalScore = 0;
             Score.SetScore(TotalScore);
+            Timer.StartTimer();
+        }
+
+        private void Start()
+        {
+            StartGame();
+            Timer.TimerEnd.AddListener(OnTimerEnd);
+        }
+
+        private void OnTimerEnd()
+        {
+            Restart();
+            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
         }
 
         public void GenerateGrid()
@@ -224,16 +238,22 @@ namespace TetrisWorld
                     if (Grid[Rows - 1, i]
                         .Letter)
                     {
-                        GenerateGrid();
-                        LetterPoolGenerator.ResetPool();
-                        TotalScore = 0;
-                        Score.SetScore(TotalScore);
+                        Restart();
                         break;
                     }
                 }
 
                 LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
             }
+        }
+
+        private void Restart()
+        {
+            GenerateGrid();
+            LetterPoolGenerator.ResetPool();
+            TotalScore = 0;
+            Score.SetScore(TotalScore);
+            Timer.StartTimer();
         }
     }
 

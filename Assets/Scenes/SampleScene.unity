@@ -289,6 +289,7 @@ GameObject:
   - component: {fileID: 416471475}
   - component: {fileID: 416471477}
   - component: {fileID: 416471476}
+  - component: {fileID: 416471478}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -355,6 +356,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416471474}
   m_CullTransparentMesh: 1
+--- !u!114 &416471478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416471474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a033a4d7c3634992b5b4e99d49d9af66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countDownTime: 120
+  CountDownText: {fileID: 696374818}
 --- !u!1 &461077151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1675,7 @@ MonoBehaviour:
   LetterPoolGenerator: {fileID: 1545045032}
   LetterPatternChecker: {fileID: 974202797}
   Score: {fileID: 1631840121}
+  Timer: {fileID: 416471478}
   TotalScore: 0
 --- !u!4 &1918591328
 Transform:
