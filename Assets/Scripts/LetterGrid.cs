@@ -19,10 +19,14 @@ namespace TetrisWorld
         public LetterBlockController LetterBlockController;
         public LetterPoolGenerator   LetterPoolGenerator;
         public LetterPatternChecker  LetterPatternChecker;
+        public Score                 Score;
+        public int                   TotalScore = 0;
 
         private void Start()
         {
             GenerateGrid();
+            TotalScore = 0;
+            Score.SetScore(TotalScore);
         }
 
         public void GenerateGrid()
@@ -115,8 +119,9 @@ namespace TetrisWorld
             return letters;
         }
 
-        private void RemoveMatchedPatternRow(List<Pattern> matchedPatterns, int rowIndex)
+        private int RemoveMatchedPatternRow(List<Pattern> matchedPatterns, int rowIndex)
         {
+            int score = 0;
             if (matchedPatterns.Count > 0)
             {
                 foreach (Pattern pattern in matchedPatterns)
@@ -125,17 +130,26 @@ namespace TetrisWorld
                     {
                         if (tuple.Item1)
                         {
-                            Grid[rowIndex, tuple.Item2]
-                                .Letter = null;
+                            if (Grid[rowIndex, tuple.Item2]
+                                .Letter)
+                            {
+                                Grid[rowIndex, tuple.Item2]
+                                    .Letter = null;
+                                score += 1;
+                            }
+
                             LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
                         }
                     }
                 }
             }
+
+            return score;
         }
 
-        private void RemoveMatchedPatternColumn(List<Pattern> matchedPatterns, int columnIndex)
+        private int RemoveMatchedPatternColumn(List<Pattern> matchedPatterns, int columnIndex)
         {
+            int score = 0;
             if (matchedPatterns.Count > 0)
             {
                 foreach (Pattern pattern in matchedPatterns)
@@ -144,13 +158,21 @@ namespace TetrisWorld
                     {
                         if (tuple.Item1)
                         {
-                            Grid[tuple.Item2, columnIndex]
-                                .Letter = null;
+                            if (Grid[tuple.Item2, columnIndex]
+                                .Letter)
+                            {
+                                Grid[tuple.Item2, columnIndex]
+                                    .Letter = null;
+                                score += 1;
+                            }
+
                             LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
                         }
                     }
                 }
             }
+
+            return score;
         }
 
         private void RearrangeGrid()
@@ -164,7 +186,8 @@ namespace TetrisWorld
                     {
                         for (int k = i + 1; k < Rows; k++)
                         {
-                            if (Grid[k,j].Letter)
+                            if (Grid[k, j]
+                                .Letter)
                             {
                                 Grid[k - 1, j]
                                     .Letter = Grid[k, j]
@@ -191,8 +214,9 @@ namespace TetrisWorld
 
                 var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
                 var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
-                RemoveMatchedPatternRow(matchedPatternRow, index.x);
-                RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
+                TotalScore += RemoveMatchedPatternRow(matchedPatternRow, index.x);
+                TotalScore += RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
+                Score.SetScore(TotalScore);
                 RearrangeGrid();
 
                 for (int i = 0; i < Columns; i++)
@@ -202,6 +226,8 @@ namespace TetrisWorld
                     {
                         GenerateGrid();
                         LetterPoolGenerator.ResetPool();
+                        TotalScore = 0;
+                        Score.SetScore(TotalScore);
                         break;
                     }
                 }
@@ -210,7 +236,6 @@ namespace TetrisWorld
             }
         }
     }
-
 
     [Serializable]
     public class LetterGridCell
