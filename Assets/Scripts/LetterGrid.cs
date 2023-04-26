@@ -168,7 +168,7 @@ namespace TetrisWorld
                             {
                                 Grid[rowIndex, tuple.Item2]
                                     .Letter = null;
-                                score += 1;
+                                score += 10;
                             }
 
                             LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
@@ -196,7 +196,7 @@ namespace TetrisWorld
                             {
                                 Grid[tuple.Item2, columnIndex]
                                     .Letter = null;
-                                score += 1;
+                                score += 10;
                             }
 
                             LetterPoolGenerator.AddLetterBackToPool(tuple.Item1);
