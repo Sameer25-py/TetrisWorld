@@ -87,6 +87,13 @@ namespace TetrisWorld
 
         public (Vector2, Vector2Int) GetLeft(Vector2Int index)
         {
+            if (!GetDown(false, index)
+                    .Item3)
+            {
+                return (Grid[index.x, index.y]
+                    .Position, index);
+            }
+
             Vector2Int newIndex = new Vector2Int(index.x, index.y - 1 >= 0 ? index.y - 1 : 0);
             if (Grid[newIndex.x, newIndex.y]
                 .Letter)
@@ -100,6 +107,13 @@ namespace TetrisWorld
 
         public (Vector2, Vector2Int) GetRight(Vector2Int index)
         {
+            if (!GetDown(false, index)
+                    .Item3)
+            {
+                return (Grid[index.x, index.y]
+                    .Position, index);
+            }
+
             Vector2Int newIndex = new Vector2Int(index.x, index.y + 1 < Columns ? index.y + 1 : Columns - 1);
             if (Grid[newIndex.x, newIndex.y]
                 .Letter)
@@ -270,11 +284,12 @@ namespace TetrisWorld
         {
             CanvasManager.ShowGameOverCanvas(TotalScore);
         }
-        
+
         public void Home()
         {
             SceneManager.LoadScene("Mainmenu", LoadSceneMode.Single);
         }
+
         public void Restart()
         {
             GenerateGrid();
