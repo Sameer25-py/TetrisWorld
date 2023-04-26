@@ -51,5 +51,10 @@ namespace TetrisWorld
         {
             _isCountDownInProgress = false;
         }
+
+        public void ResumeTimer()
+        {
+            _isCountDownInProgress = true;
+        }
     }
 }

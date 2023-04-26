@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TetrisWorld
 {
@@ -22,6 +23,9 @@ namespace TetrisWorld
         public Score                 Score;
         public Timer                 Timer;
         public int                   TotalScore = 0;
+        public GameplayCanvasManager CanvasManager;
+
+        private Letter _cachedLetter;
 
         private void StartGame()
         {
@@ -29,6 +33,22 @@ namespace TetrisWorld
             TotalScore = 0;
             Score.SetScore(TotalScore);
             Timer.StartTimer();
+            CanvasManager.StartGame();
+        }
+
+        public void PauseButton()
+        {
+            Timer.PauseTimer();
+            _cachedLetter                           = LetterBlockController.ActiveLetterBlock;
+            LetterBlockController.ActiveLetterBlock = null;
+            CanvasManager.PauseGame();
+        }
+
+        public void ResumeButton()
+        {
+            Timer.ResumeTimer();
+            LetterBlockController.ActiveLetterBlock = _cachedLetter;
+            CanvasManager.ResumeGame();
         }
 
         private void Start()
@@ -39,8 +59,7 @@ namespace TetrisWorld
 
         private void OnTimerEnd()
         {
-            Restart();
-            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
+            GameEnd();
         }
 
         public void GenerateGrid()
@@ -238,7 +257,7 @@ namespace TetrisWorld
                     if (Grid[Rows - 1, i]
                         .Letter)
                     {
-                        Restart();
+                        GameEnd();
                         break;
                     }
                 }
@@ -247,13 +266,24 @@ namespace TetrisWorld
             }
         }
 
-        private void Restart()
+        private void GameEnd()
+        {
+            CanvasManager.ShowGameOverCanvas(TotalScore);
+        }
+        
+        public void Home()
+        {
+            SceneManager.LoadScene("Mainmenu", LoadSceneMode.Single);
+        }
+        public void Restart()
         {
             GenerateGrid();
             LetterPoolGenerator.ResetPool();
             TotalScore = 0;
             Score.SetScore(TotalScore);
             Timer.StartTimer();
+            CanvasManager.StartGame();
+            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
         }
     }
 
