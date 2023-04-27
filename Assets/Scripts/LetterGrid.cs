@@ -157,7 +157,7 @@ namespace TetrisWorld
         private List<Letter> GetColumnAroundIndex(int columnIndex)
         {
             List<Letter> letters = new();
-            for (int i = 0; i < Rows - 1; i++)
+            for (int i = Rows - 1; i >= 0; i--)
             {
                 letters.Add(Grid[i, columnIndex]
                     .Letter);
@@ -205,10 +205,10 @@ namespace TetrisWorld
                     {
                         if (tuple.Item1)
                         {
-                            if (Grid[tuple.Item2, columnIndex]
+                            if (Grid[Rows-1-tuple.Item2, columnIndex]
                                 .Letter)
                             {
-                                Grid[tuple.Item2, columnIndex]
+                                Grid[Rows-1-tuple.Item2, columnIndex]
                                     .Letter = null;
                                 score += 10;
                             }
