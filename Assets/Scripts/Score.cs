@@ -8,7 +8,7 @@ namespace TetrisWorld
         public TMP_Text Text;
 
         public void SetScore(int score)
-        {
+        {   
             Text.text = score.ToString();
         }
     }

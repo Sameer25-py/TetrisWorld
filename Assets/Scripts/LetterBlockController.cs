@@ -26,17 +26,20 @@ namespace TetrisWorld
         }
 
         public void MoveDown()
-        {
+        {   
+            AudioManager.Instance.PlayButtonPressedSound();
             _isMoveDown = true;
         }
 
         public void MoveLeft()
-        {
+        {   
+            AudioManager.Instance.PlayButtonPressedSound();
             _isMoveLeft = true;
         }
 
         public void MoveRight()
-        {
+        {   
+            AudioManager.Instance.PlayButtonPressedSound();
             _isMoveRight = true;
         }
 

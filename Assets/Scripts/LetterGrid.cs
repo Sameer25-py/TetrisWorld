@@ -261,8 +261,13 @@ namespace TetrisWorld
 
                 var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
                 var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
+                int lastScore            = TotalScore;
                 TotalScore += RemoveMatchedPatternRow(matchedPatternRow, index.x);
                 TotalScore += RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
+                if (lastScore != TotalScore)
+                {
+                    AudioManager.Instance.PlayTileMatchSound();
+                }
                 Score.SetScore(TotalScore);
                 RearrangeGrid();
 
@@ -281,12 +286,14 @@ namespace TetrisWorld
         }
 
         private void GameEnd()
-        {
+        {   
+            AudioManager.Instance.PlayGameOverSound();
             CanvasManager.ShowGameOverCanvas(TotalScore);
         }
 
         public void Home()
-        {
+        {   
+            AudioManager.Instance.PlayButtonPressedSound();
             SceneManager.LoadScene("Mainmenu", LoadSceneMode.Single);
         }
 
