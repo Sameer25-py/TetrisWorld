@@ -306,6 +306,7 @@ namespace TetrisWorld
             Timer.StartTimer();
             CanvasManager.StartGame();
             LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
+            AudioManager.Instance.PlayBgMusic();
         }
     }
 
