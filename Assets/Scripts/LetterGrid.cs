@@ -32,7 +32,8 @@ namespace TetrisWorld
         private Vector2 _initialPosition;
 
         private void StartGame()
-        {
+        {   
+            Background.Instance.ApplyBackground();
             GenerateGrid();
             LetterPoolGenerator.GeneratePool();
             TotalScore = 0;

@@ -59,6 +59,8 @@ namespace TetrisWorld
             {
                 Music.sprite = MuteMusicSprite;
             }
+            
+            Background.Instance.ApplyBackground();
         }
     }
 }
