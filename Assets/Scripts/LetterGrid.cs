@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +10,7 @@ namespace TetrisWorld
         public int               Rows, Columns;
         public LetterGridCell[,] Grid;
 
-        public int     SizeMultiplier = 5;
+        public float   SizeMultiplier = 5;
         public Vector2 InitialPosition;
         public Vector2 PositionOffset = new Vector2(0.04f, 0.0f);
         public Letters Letters;
@@ -26,6 +24,10 @@ namespace TetrisWorld
         public GameplayCanvasManager CanvasManager;
 
         private Letter _cachedLetter;
+
+        private Camera _mainCamera;
+        private float  _scale  = 0.028f;
+        private float  _offset = 0.3f;
 
         private void StartGame()
         {
@@ -53,6 +55,7 @@ namespace TetrisWorld
 
         private void Start()
         {
+            _mainCamera = Camera.main;
             StartGame();
             Timer.TimerEnd.AddListener(OnTimerEnd);
         }
@@ -65,23 +68,26 @@ namespace TetrisWorld
         public void GenerateGrid()
         {
             Grid = new LetterGridCell[Rows, Columns];
-            Vector2 newOffset = InitialPosition;
+            float   halfHeight    = _mainCamera.orthographicSize;
+            float   halfWidth     = halfHeight * _mainCamera.aspect;
+            Vector2 newOffset     = InitialPosition;
+            Vector2 adjustedScale = new Vector2(_scale * halfWidth * 2f, _scale * halfWidth * 2f);
+
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
                 {
+                    newOffset.x = -halfWidth  + _offset + (j * adjustedScale.x * SizeMultiplier);
+                    newOffset.y = -halfHeight + _offset + (i * adjustedScale.y * SizeMultiplier);
                     Grid[i, j] = new LetterGridCell()
                     {
                         Position = newOffset,
                         Letter   = null
                     };
-                    // Instantiate(Letters.LetterPrefab, Grid[i, j]
+                    // Letters.LetterPrefab.transform.localScale = adjustedScale;
+                    // var obj = Instantiate(Letters.LetterPrefab, Grid[i, j]
                     //     .Position, Quaternion.identity);
-                    newOffset.x += Letters.LetterPrefab.transform.localScale.x * SizeMultiplier + PositionOffset.x;
                 }
-
-                newOffset.x =  InitialPosition.x;
-                newOffset.y += Letters.LetterPrefab.transform.localScale.y * SizeMultiplier + PositionOffset.y;
             }
         }
 
@@ -205,10 +211,10 @@ namespace TetrisWorld
                     {
                         if (tuple.Item1)
                         {
-                            if (Grid[Rows-1-tuple.Item2, columnIndex]
+                            if (Grid[Rows - 1 - tuple.Item2, columnIndex]
                                 .Letter)
                             {
-                                Grid[Rows-1-tuple.Item2, columnIndex]
+                                Grid[Rows - 1 - tuple.Item2, columnIndex]
                                     .Letter = null;
                                 score += 10;
                             }
@@ -268,6 +274,7 @@ namespace TetrisWorld
                 {
                     AudioManager.Instance.PlayTileMatchSound();
                 }
+
                 Score.SetScore(TotalScore);
                 RearrangeGrid();
 
@@ -286,13 +293,13 @@ namespace TetrisWorld
         }
 
         private void GameEnd()
-        {   
+        {
             AudioManager.Instance.PlayGameOverSound();
             CanvasManager.ShowGameOverCanvas(TotalScore);
         }
 
         public void Home()
-        {   
+        {
             AudioManager.Instance.PlayButtonPressedSound();
             SceneManager.LoadScene("Mainmenu", LoadSceneMode.Single);
         }

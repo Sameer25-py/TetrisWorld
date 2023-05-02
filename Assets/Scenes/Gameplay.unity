@@ -3324,7 +3324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Rows: 12
   Columns: 7
-  SizeMultiplier: 5
+  SizeMultiplier: 5.2
   InitialPosition: {x: -2.38, y: -4.56}
   PositionOffset: {x: 0.04, y: 0}
   Letters: {fileID: 11400000, guid: bf43bd37e5b62c74689787d0223de234, type: 2}
