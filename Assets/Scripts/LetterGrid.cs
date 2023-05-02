@@ -29,13 +29,17 @@ namespace TetrisWorld
         private float  _scale  = 0.028f;
         private float  _offset = 0.3f;
 
+        private Vector2 _initialPosition;
+
         private void StartGame()
         {
             GenerateGrid();
+            LetterPoolGenerator.GeneratePool();
             TotalScore = 0;
             Score.SetScore(TotalScore);
             Timer.StartTimer();
             CanvasManager.StartGame();
+            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
         }
 
         public void PauseButton()
@@ -89,6 +93,10 @@ namespace TetrisWorld
                     //     .Position, Quaternion.identity);
                 }
             }
+
+            _initialPosition = Grid[Rows - 1, 3]
+                .Position;
+            _initialPosition.y -= -halfHeight + _offset + (adjustedScale.y * SizeMultiplier);
         }
 
         public (Vector2, Vector2Int) GetLeft(Vector2Int index)
@@ -288,7 +296,7 @@ namespace TetrisWorld
                     }
                 }
 
-                LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
+                LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
             }
         }
 
@@ -312,7 +320,7 @@ namespace TetrisWorld
             Score.SetScore(TotalScore);
             Timer.StartTimer();
             CanvasManager.StartGame();
-            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter());
+            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
             AudioManager.Instance.PlayBgMusic();
         }
     }

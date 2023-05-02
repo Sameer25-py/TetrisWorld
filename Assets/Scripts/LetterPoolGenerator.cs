@@ -6,19 +6,24 @@ namespace TetrisWorld
 {
     public class LetterPoolGenerator : MonoBehaviour
     {
-        public int                   PoolLength = 60;
-        public Letters               Letters;
-        public List<Letter>          LetterPool;
-        public Vector2               InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
-        public LetterBlockController LetterBlockController;
-        public WordsDictionary       WordsDictionary;
+        public  int             PoolLength = 60;
+        public  Letters         Letters;
+        public  List<Letter>    LetterPool;
+        public  Vector2         InitialPosition = new Vector2(-0.00999998301f, 3.6900003f);
+        public  WordsDictionary WordsDictionary;
+        private Camera          _mainCamera;
 
-        public int PoolIndex = 0;
+        public  int   PoolIndex = 0;
+        private float _scale    = 0.028f;
 
-        private void GeneratePool()
-        {
+        public void GeneratePool()
+        {   
+            //todo: use scale from letter grid and initialposition from letter grid
             List<string> randomWords = WordsDictionary.GetRandomWords(PoolLength);
             LetterPool = new();
+            float   halfHeight    = _mainCamera.orthographicSize;
+            float   halfWidth     = halfHeight * _mainCamera.aspect;
+            Vector2 adjustedScale = new Vector2(_scale * halfWidth * 2f, _scale * halfWidth * 2f);
 
             for (int i = 0; i < randomWords.Count; i++)
             {
@@ -27,8 +32,9 @@ namespace TetrisWorld
                          .Length;
                      j++)
                 {
-                    GameObject letterObj = Instantiate(Letters.LetterPrefab, InitialPosition, Quaternion.identity);
+                    GameObject letterObj = Instantiate(Letters.LetterPrefab);
                     letterObj.SetActive(false);
+                    letterObj.transform.localScale = adjustedScale;
                     Letter letter = letterObj.GetComponent<Letter>();
                     Sprite sprite = Letters.GetSpriteByName(randomWords[i][j].ToString());
                     letter.PrefabLetter = sprite.name;
@@ -41,8 +47,7 @@ namespace TetrisWorld
 
         private void Start()
         {
-            GeneratePool();
-            LetterBlockController.SetActiveBlock(GetAvailableLetter());
+            _mainCamera = Camera.main;
         }
 
         private void OnDestroy()
@@ -53,13 +58,14 @@ namespace TetrisWorld
             }
         }
 
-        public Letter GetAvailableLetter()
+        public Letter GetAvailableLetter(Vector2 initialPosition)
         {
             if (PoolIndex >= LetterPool.Count)
             {
                 PoolIndex = 0;
             }
             Letter letter = LetterPool[PoolIndex ++];
+            letter.transform.position = initialPosition;
             letter.gameObject.SetActive(true);
             return letter;
         }
