@@ -431,7 +431,7 @@ RectTransform:
   - {fileID: 128275739}
   - {fileID: 1975764492}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -883,13 +883,63 @@ RectTransform:
   - {fileID: 865503080}
   - {fileID: 1286628930}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &395299912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395299914}
+  - component: {fileID: 395299913}
+  m_Layer: 0
+  m_Name: BlockManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &395299913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395299912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ed6c5d23c446a498f00a12a9156850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  L1: {fileID: 0}
+  L2: {fileID: 0}
+  LetterPoolGenerator: {fileID: 1545045032}
+  Grid: {fileID: 1918591327}
+  StartTicking: 0
+  BlockType: 0
+--- !u!4 &395299914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395299912}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.63361645, y: 4.8421383, z: -0.02765296}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &403916768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,7 +1341,7 @@ RectTransform:
   - {fileID: 1106351509}
   - {fileID: 996029884}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2036,7 +2086,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &866255871
 MonoBehaviour:
@@ -2219,7 +2269,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &974202797
 MonoBehaviour:
@@ -2317,8 +2367,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1140698179}
-        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockController, Assembly-CSharp
+      - m_Target: {fileID: 395299913}
+        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockManager, Assembly-CSharp
         m_MethodName: MoveRight
         m_Mode: 1
         m_Arguments:
@@ -2526,8 +2576,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1140698179}
-        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockController, Assembly-CSharp
+      - m_Target: {fileID: 395299913}
+        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockManager, Assembly-CSharp
         m_MethodName: MoveDown
         m_Mode: 1
         m_Arguments:
@@ -2576,59 +2626,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106351508}
   m_CullTransparentMesh: 1
---- !u!1 &1140698177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1140698178}
-  - component: {fileID: 1140698179}
-  m_Layer: 0
-  m_Name: BlockController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1140698178
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140698177}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9, y: 9, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1140698179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140698177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05055778c0ef4b88a333a278606c01dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Grid: {fileID: 1918591327}
-  ActiveLetterBlock: {fileID: 0}
-  CurrentIndex: {x: 0, y: 0}
-  LastIndex: {x: 0, y: 0}
-  CurrentPosition: {x: 0, y: 0}
-  NextPosition: {x: 0, y: 0}
-  FirstMove: 0
-  elapsedTime: 0
-  speed: 0.5
 --- !u!1 &1286628929
 GameObject:
   m_ObjectHideFlags: 0
@@ -3242,8 +3239,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1140698179}
-        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockController, Assembly-CSharp
+      - m_Target: {fileID: 395299913}
+        m_TargetAssemblyTypeName: TetrisWorld.LetterBlockManager, Assembly-CSharp
         m_MethodName: MoveLeft
         m_Mode: 1
         m_Arguments:
@@ -3321,19 +3318,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5639087440124d669a20b6650f04e5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rows: 12
+  Rows: 13
   Columns: 7
   SizeMultiplier: 5.2
-  InitialPosition: {x: -2.38, y: -4.56}
   PositionOffset: {x: 0.04, y: 0}
   Letters: {fileID: 11400000, guid: bf43bd37e5b62c74689787d0223de234, type: 2}
-  LetterBlockController: {fileID: 1140698179}
+  LetterBlockController: {fileID: 0}
   LetterPoolGenerator: {fileID: 1545045032}
   LetterPatternChecker: {fileID: 974202797}
   Score: {fileID: 1631840121}
   Timer: {fileID: 416471478}
   TotalScore: 0
   CanvasManager: {fileID: 866255871}
+  InitialPosition: {x: -2.38, y: -4.56}
+  InitialPositionRight: {x: 0, y: 0}
+  InitialPositionDown: {x: 0, y: 0}
+  BlockManager: {fileID: 395299913}
 --- !u!4 &1918591328
 Transform:
   m_ObjectHideFlags: 0

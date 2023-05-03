@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 namespace TetrisWorld
 {
@@ -11,11 +12,9 @@ namespace TetrisWorld
         public LetterGridCell[,] Grid;
 
         public float   SizeMultiplier = 5;
-        public Vector2 InitialPosition;
         public Vector2 PositionOffset = new Vector2(0.04f, 0.0f);
         public Letters Letters;
-
-        public LetterBlockController LetterBlockController;
+        
         public LetterPoolGenerator   LetterPoolGenerator;
         public LetterPatternChecker  LetterPatternChecker;
         public Score                 Score;
@@ -29,7 +28,10 @@ namespace TetrisWorld
         private float  _scale  = 0.028f;
         private float  _offset = 0.3f;
 
-        private Vector2 _initialPosition;
+        public Vector2            InitialPosition;
+        public Vector2            InitialPositionRight, InitialPositionDown;
+        public LetterBlockManager BlockManager;
+
 
         private void StartGame()
         {
@@ -40,22 +42,20 @@ namespace TetrisWorld
             Score.SetScore(TotalScore);
             Timer.StartTimer();
             CanvasManager.StartGame();
-            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
-            //LetterPoolGenerator.GetAvailableLetter(_initialPosition);
+            InitializeBlockLetters();
         }
 
         public void PauseButton()
         {
             Timer.PauseTimer();
-            _cachedLetter                           = LetterBlockController.ActiveLetterBlock;
-            LetterBlockController.ActiveLetterBlock = null;
+            BlockManager.StartTicking = false;
             CanvasManager.PauseGame();
         }
 
         public void ResumeButton()
         {
             Timer.ResumeTimer();
-            LetterBlockController.ActiveLetterBlock = _cachedLetter;
+            BlockManager.StartTicking = true;
             CanvasManager.ResumeGame();
         }
 
@@ -74,9 +74,9 @@ namespace TetrisWorld
         public void GenerateGrid()
         {
             Grid = new LetterGridCell[Rows, Columns];
-            float   halfHeight    = _mainCamera.orthographicSize;
-            float   halfWidth     = halfHeight * _mainCamera.aspect;
-            Vector2 newOffset     = InitialPosition;
+            float   halfHeight = _mainCamera.orthographicSize;
+            float   halfWidth  = halfHeight * _mainCamera.aspect;
+            Vector2 newOffset;
             Vector2 adjustedScale = new Vector2(_scale * halfWidth * 2f, _scale * halfWidth * 2f);
 
             for (int i = 0; i < Rows; i++)
@@ -96,66 +96,66 @@ namespace TetrisWorld
                 }
             }
 
-            _initialPosition = Grid[Rows - 1, 3]
+            InitialPosition = Grid[Rows - 1, 3]
                 .Position;
-            _initialPosition.y = -halfHeight + _offset + (Rows * adjustedScale.y * SizeMultiplier);
+            InitialPositionRight = InitialPositionDown = InitialPosition;
+            InitialPositionRight.x = Grid[0, 4]
+                .Position.x;
+            InitialPositionDown.y = Grid[Rows - 2, 0]
+                .Position.y;
         }
 
-        public (Vector2, Vector2Int) GetLeft(Vector2Int index)
+        public void InitializeBlockLetters(int letterCount = 2)
         {
-            if (!GetDown(false, index)
-                    .Item3)
+            int blockType = UnityEngine.Random.Range(0, 2);
+            if (blockType == 0)
             {
-                return (Grid[index.x, index.y]
-                    .Position, index);
+                BlockManager.InitializeBlockControllers(new Vector2Int(Rows - 1, 3), new Vector2Int(Rows - 1, 4), InitialPosition,
+                    InitialPositionRight, 0);
             }
 
-            Vector2Int newIndex = new Vector2Int(index.x, index.y - 1 >= 0 ? index.y - 1 : 0);
-            if (Grid[newIndex.x, newIndex.y]
-                .Letter)
+            else
             {
-                newIndex = index;
+                BlockManager.InitializeBlockControllers(new Vector2Int(Rows - 2, 3), new Vector2Int(Rows - 1, 3),
+                    InitialPositionDown,
+                    InitialPosition, 1);
             }
+        }
+
+        public (Vector2, Vector2Int) GetLeft(Letter letter)
+        {
+            Vector2Int index = letter.Index;
+            Vector2Int newIndex = new Vector2Int(index.x, index.y - 1 >= 0 && !Grid[index.x, index.y - 1]
+                .Letter
+                ? index.y - 1
+                : index.y);
 
             return (Grid[newIndex.x, newIndex.y]
                 .Position, newIndex);
         }
 
-        public (Vector2, Vector2Int) GetRight(Vector2Int index)
+        public (Vector2, Vector2Int) GetRight(Letter letter)
         {
-            if (!GetDown(false, index)
-                    .Item3)
-            {
-                return (Grid[index.x, index.y]
-                    .Position, index);
-            }
-
-            Vector2Int newIndex = new Vector2Int(index.x, index.y + 1 < Columns ? index.y + 1 : Columns - 1);
-            if (Grid[newIndex.x, newIndex.y]
-                .Letter)
-            {
-                newIndex = index;
-            }
+            Vector2Int index = letter.Index;
+            Vector2Int newIndex = new Vector2Int(index.x, index.y + 1 < Columns && !Grid[index.x, index.y + 1]
+                .Letter
+                ? index.y + 1
+                : index.y);
 
             return (Grid[newIndex.x, newIndex.y]
                 .Position, newIndex);
         }
 
-        public (Vector2, Vector2Int, bool) GetDown(bool isFirstMove, Vector2Int index)
+        public (Vector2, Vector2Int) GetDown(Letter letter)
         {
-            if (isFirstMove)
-            {
-                index = new Vector2Int(Rows - 1, 3);
-                return (Grid[Rows - 1, 3]
-                    .Position, index, true);
-            }
+            Vector2Int index = letter.Index;
+            Vector2Int newIndex = new Vector2Int(index.x - 1 >= 0 && !Grid[index.x - 1, index.y]
+                .Letter
+                ? index.x - 1
+                : index.x, index.y);
 
-            Vector2Int newIndex = new Vector2Int(index.x - 1 > 0 ? index.x - 1 : 0, index.y);
-
-            bool isValidMove = !(index.x == 0 || Grid[newIndex.x, newIndex.y]
-                .Letter);
             return (Grid[newIndex.x, newIndex.y]
-                .Position, newIndex, isValidMove);
+                .Position, newIndex);
         }
 
         private List<Letter> GetRowAroundIndex(int rowIndex)
@@ -267,45 +267,51 @@ namespace TetrisWorld
             }
         }
 
-        public void AddLetterToGrid(Vector2Int index, Letter letter)
+        public void AddLetterToGrid(Letter letter)
         {
+            Vector2Int index = letter.Index;
             if ((index.x < Rows && index.x >= 0) && (index.y < Columns && index.y >= 0) && !Grid[index.x, index.y]
                     .Letter)
             {
                 Grid[index.x, index.y]
                     .Letter = letter;
 
-                var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
-                var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
-                int lastScore            = TotalScore;
-                TotalScore += RemoveMatchedPatternRow(matchedPatternRow, index.x);
-                TotalScore += RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
-                if (lastScore != TotalScore)
-                {
-                    AudioManager.Instance.PlayTileMatchSound();
-                }
-
-                Score.SetScore(TotalScore);
-                RearrangeGrid();
 
                 for (int i = 0; i < Columns; i++)
                 {
                     if (Grid[Rows - 1, i]
                         .Letter)
-                    {
+                    {   
                         GameEnd();
                         break;
                     }
                 }
-
-                LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
             }
+        }
+
+        private void CheckPattern(Vector2Int index)
+        {
+            var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
+            var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
+            int lastScore            = TotalScore;
+            TotalScore += RemoveMatchedPatternRow(matchedPatternRow, index.x);
+            TotalScore += RemoveMatchedPatternColumn(matchedPatternColumn, index.y);
+            if (lastScore != TotalScore)
+            {
+                AudioManager.Instance.PlayTileMatchSound();
+            }
+
+            Score.SetScore(TotalScore);
+            RearrangeGrid();
+
+            InitializeBlockLetters();
         }
 
         private void GameEnd()
         {
             AudioManager.Instance.PlayGameOverSound();
             CanvasManager.ShowGameOverCanvas(TotalScore);
+            BlockManager.StartTicking = false;
         }
 
         public void Home()
@@ -322,7 +328,7 @@ namespace TetrisWorld
             Score.SetScore(TotalScore);
             Timer.StartTimer();
             CanvasManager.StartGame();
-            LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
+            InitializeBlockLetters();
             AudioManager.Instance.PlayBgMusic();
         }
     }

@@ -58,13 +58,14 @@ namespace TetrisWorld
             }
         }
 
-        public Letter GetAvailableLetter(Vector2 initialPosition)
+        public Letter GetAvailableLetter(Vector2 initialPosition, Vector2Int index = default)
         {
             if (PoolIndex >= LetterPool.Count)
             {
                 PoolIndex = 0;
             }
             Letter letter = LetterPool[PoolIndex ++];
+            letter.Index              = index;
             letter.transform.position = initialPosition;
             letter.gameObject.SetActive(true);
             return letter;
