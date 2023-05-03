@@ -14,7 +14,7 @@ namespace TetrisWorld
         public float   SizeMultiplier = 5;
         public Vector2 PositionOffset = new Vector2(0.04f, 0.0f);
         public Letters Letters;
-        
+
         public LetterPoolGenerator   LetterPoolGenerator;
         public LetterPatternChecker  LetterPatternChecker;
         public Score                 Score;
@@ -240,26 +240,38 @@ namespace TetrisWorld
 
         private void RearrangeGrid()
         {
-            for (int i = 0; i < Rows; i++)
+            for (int i = 0; i < Columns; i++)
             {
-                for (int j = 0; j < Columns; j++)
+                bool _isEmptyLetterPassed = false;
+                int  emptySpaceIndex      = 0;
+                for (int j = 0; j < Rows; j++)
                 {
-                    if (!Grid[i, j]
+                    if (!Grid[j, i]
                             .Letter)
                     {
-                        for (int k = i + 1; k < Rows; k++)
+                        _isEmptyLetterPassed = true;
+                        emptySpaceIndex      = j;
+                    }
+
+                    else
+                    {
+                        if (_isEmptyLetterPassed)
                         {
-                            if (Grid[k, j]
-                                .Letter)
+                            for (int k = emptySpaceIndex + 1; k < Rows - 1; k++)
                             {
-                                Grid[k - 1, j]
-                                    .Letter = Grid[k, j]
-                                    .Letter;
-                                Grid[k - 1, j]
-                                    .Letter.transform.position = Grid[k - 1, j]
-                                    .Position;
-                                Grid[k, j]
-                                    .Letter = null;
+                                if (Grid[k, i]
+                                    .Letter)
+                                {
+                                    Letter letter = Grid[k, i]
+                                        .Letter;
+                                    Grid[k, i]
+                                        .Letter = null;
+                                    letter.transform.position = Grid[k-1, i]
+                                        .Position;
+                                    letter.Index = new Vector2Int(k-1, i);
+                                    Grid[k-1, i]
+                                        .Letter = letter;
+                                }
                             }
                         }
                     }
@@ -281,7 +293,7 @@ namespace TetrisWorld
                 {
                     if (Grid[Rows - 1, i]
                         .Letter)
-                    {   
+                    {
                         GameEnd();
                         break;
                     }
@@ -303,13 +315,13 @@ namespace TetrisWorld
             }
 
             Score.SetScore(TotalScore);
-            
+
 
             InitializeBlockLetters();
         }
 
         private void GameEnd()
-        {   
+        {
             AudioManager.Instance.PlayGameOverSound();
             CanvasManager.ShowGameOverCanvas(TotalScore);
             BlockManager.StartTicking = false;
