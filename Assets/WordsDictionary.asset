@@ -7979,3 +7979,19 @@ MonoBehaviour:
   - WordsList:
     - INCOMPREHENSIBLE
     - IRRESPONSIBILITY
+  ValidLetters:
+  - ER
+  - ST
+  - IN
+  - ES
+  - NG
+  - TE
+  - ED
+  - ON
+  - AT
+  - AN
+  - EN
+  - LE
+  - RA
+  - IS
+  - LI

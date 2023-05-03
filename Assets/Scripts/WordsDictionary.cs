@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 [CreateAssetMenu(fileName = "WordsDictionary", menuName = "WordsDictionary", order = 0)]
 public class WordsDictionary : ScriptableObject
 {
-    public List<Words> Dictionary;
+    public List<Words>  Dictionary;
+    public List<string> ValidLetters;
 
 
     public List<string> GetWordsListByLetterCount(int letterCount)
@@ -24,6 +25,17 @@ public class WordsDictionary : ScriptableObject
                 .WordsList.Count);
             
             randomWords.Add(Dictionary[randomDictionaryList].WordsList[randomWordList]);
+        }
+
+        return randomWords;
+    }
+
+    public List<string> GetRandomValidLetters(int count)
+    {
+        List<string> randomWords = new();
+        for (int i = 0; i < count; i++)
+        {
+            randomWords.Add(ValidLetters[Random.Range(0,ValidLetters.Count)]);
         }
 
         return randomWords;

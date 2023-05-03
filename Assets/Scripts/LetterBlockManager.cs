@@ -19,8 +19,17 @@ namespace TetrisWorld
         public void InitializeBlockControllers(Vector2Int index1, Vector2Int index2, Vector2 pos1, Vector2 pos2,
             int blockType = 1)
         {
-            L1           = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
-            L2           = LetterPoolGenerator.GetAvailableLetter(pos2, index2);
+            if (blockType == 1)
+            {   
+                L2 = LetterPoolGenerator.GetAvailableLetter(pos2, index2);
+                L1 = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
+            }
+            else
+            {
+                L1 = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
+                L2 = LetterPoolGenerator.GetAvailableLetter(pos2, index2);
+            }
+
             BlockType    = blockType;
             StartTicking = true;
             _elpasedTime = 0f;
@@ -42,7 +51,7 @@ namespace TetrisWorld
             if (!CheckIndex(newIndex, L1) && !CheckIndex(newIndex1, L2))
             {
                 var (newPos3, newIndex3) = Grid.GetLeft(L1);
-                var (newPos4, newIndex4)   = Grid.GetLeft(L2);
+                var (newPos4, newIndex4) = Grid.GetLeft(L2);
 
                 if (!CheckIndex(newIndex3, L1) && !CheckIndex(newIndex4, L2))
                 {
@@ -88,47 +97,25 @@ namespace TetrisWorld
             {
                 _elpasedTime = 0f;
                 Speed        = 0.5f;
-                if (BlockType == 1)
+                
+                var (newPos, newIndex)  = Grid.GetDown(L1);
+                var (newPos1, newIndex1) = Grid.GetDown(L2);
+                
+                if (!CheckIndex(newIndex, L1) && !CheckIndex(newIndex1, L2))
                 {
-                    var (newPos, newIndex) = Grid.GetDown(L1);
-                    if (!CheckIndex(newIndex, L1))
-                    {
-                        L1.Index              = newIndex;
-                        L1.transform.position = newPos;
-
-                        (newPos, newIndex)    = Grid.GetDown(L2);
-                        L2.Index              = newIndex;
-                        L2.transform.position = newPos;
-                    }
-                    else
-                    {
-                        Grid.AddLetterToGrid(L1);
-                        Grid.AddLetterToGrid(L2);
-
-                        Grid.InitializeBlockLetters();
-                    }
+                    L1.Index              = newIndex;
+                    L1.transform.position = newPos;
+                    
+                    L2.Index              = newIndex1;
+                    L2.transform.position = newPos1;
                 }
                 else
                 {
-                    var (newPos1, newIndex1) = Grid.GetDown(L1);
-                    var (newPos2, newIndex2) = Grid.GetDown(L2);
-
-                    if (!CheckIndex(newIndex1, L1) && !CheckIndex(newIndex2, L2))
-                    {
-                        L1.Index              = newIndex1;
-                        L1.transform.position = newPos1;
-
-                        L2.Index              = newIndex2;
-                        L2.transform.position = newPos2;
-                    }
-                    else
-                    {
-                        Grid.AddLetterToGrid(L1);
-                        Grid.AddLetterToGrid(L2);
-
-                        Grid.InitializeBlockLetters();
-                    }
+                    Grid.AddLetterToGrid(L1);
+                    Grid.AddLetterToGrid(L2);
+                    Grid.CheckPattern(L1.Index);
                 }
+                
             }
         }
     }

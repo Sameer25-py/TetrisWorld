@@ -289,7 +289,7 @@ namespace TetrisWorld
             }
         }
 
-        private void CheckPattern(Vector2Int index)
+        public void CheckPattern(Vector2Int index)
         {
             var matchedPatternRow    = LetterPatternChecker.MatchPattern(GetRowAroundIndex(index.x));
             var matchedPatternColumn = LetterPatternChecker.MatchPattern(GetColumnAroundIndex(index.y));
@@ -308,7 +308,7 @@ namespace TetrisWorld
         }
 
         private void GameEnd()
-        {
+        {   
             AudioManager.Instance.PlayGameOverSound();
             CanvasManager.ShowGameOverCanvas(TotalScore);
             BlockManager.StartTicking = false;

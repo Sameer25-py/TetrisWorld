@@ -17,9 +17,9 @@ namespace TetrisWorld
         private float _scale    = 0.028f;
 
         public void GeneratePool()
-        {   
+        {
             //todo: use scale from letter grid and initialposition from letter grid
-            List<string> randomWords = WordsDictionary.GetRandomWords(PoolLength);
+            List<string> randomWords = WordsDictionary.GetRandomValidLetters(PoolLength / 2);
             LetterPool = new();
             float   halfHeight    = _mainCamera.orthographicSize;
             float   halfWidth     = halfHeight * _mainCamera.aspect;
@@ -36,7 +36,8 @@ namespace TetrisWorld
                     letterObj.SetActive(false);
                     letterObj.transform.localScale = adjustedScale;
                     Letter letter = letterObj.GetComponent<Letter>();
-                    Sprite sprite = Letters.GetSpriteByName(randomWords[i][j].ToString());
+                    Sprite sprite = Letters.GetSpriteByName(randomWords[i][j]
+                        .ToString());
                     letter.PrefabLetter = sprite.name;
                     letterObj.GetComponent<SpriteRenderer>()
                         .sprite = sprite;
@@ -64,7 +65,8 @@ namespace TetrisWorld
             {
                 PoolIndex = 0;
             }
-            Letter letter = LetterPool[PoolIndex ++];
+
+            Letter letter = LetterPool[PoolIndex++];
             letter.Index              = index;
             letter.transform.position = initialPosition;
             letter.gameObject.SetActive(true);
@@ -72,7 +74,7 @@ namespace TetrisWorld
         }
 
         public void AddLetterBackToPool(Letter letter)
-        {   
+        {
             letter.transform.SetAsLastSibling();
             letter.gameObject.SetActive(false);
             letter.transform.position = InitialPosition;
