@@ -299,10 +299,11 @@ namespace TetrisWorld
             if (lastScore != TotalScore)
             {
                 AudioManager.Instance.PlayTileMatchSound();
+                RearrangeGrid();
             }
 
             Score.SetScore(TotalScore);
-            RearrangeGrid();
+            
 
             InitializeBlockLetters();
         }

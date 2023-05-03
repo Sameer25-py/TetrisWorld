@@ -58,7 +58,7 @@ namespace TetrisWorld
         public void PlayGameOverSound()
         {
             AudioSource1.clip = GameOverClip;
-            AudioSource1.Play();
+            AudioSource1.PlayOneShot(GameOverClip);
             AudioSource2.Stop();
         }
 
