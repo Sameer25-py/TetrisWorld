@@ -32,7 +32,7 @@ namespace TetrisWorld
         private Vector2 _initialPosition;
 
         private void StartGame()
-        {   
+        {
             Background.Instance.ApplyBackground();
             GenerateGrid();
             LetterPoolGenerator.GeneratePool();
@@ -41,6 +41,7 @@ namespace TetrisWorld
             Timer.StartTimer();
             CanvasManager.StartGame();
             LetterBlockController.SetActiveBlock(LetterPoolGenerator.GetAvailableLetter(_initialPosition));
+            //LetterPoolGenerator.GetAvailableLetter(_initialPosition);
         }
 
         public void PauseButton()
@@ -97,7 +98,7 @@ namespace TetrisWorld
 
             _initialPosition = Grid[Rows - 1, 3]
                 .Position;
-            _initialPosition.y -= -halfHeight + _offset + (adjustedScale.y * SizeMultiplier);
+            _initialPosition.y = -halfHeight + _offset + (Rows * adjustedScale.y * SizeMultiplier);
         }
 
         public (Vector2, Vector2Int) GetLeft(Vector2Int index)
