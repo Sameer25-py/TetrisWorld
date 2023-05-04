@@ -24,10 +24,15 @@ namespace TetrisWorld
                 L2 = LetterPoolGenerator.GetAvailableLetter(pos2, index2);
                 L1 = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
             }
-            else
+            else if(blockType == 0)
             {
                 L1 = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
                 L2 = LetterPoolGenerator.GetAvailableLetter(pos2, index2);
+            }
+            else
+            {
+                L1 = LetterPoolGenerator.GetAvailableLetter(pos1, index1);
+                L2 = null;
             }
 
             BlockType    = blockType;
@@ -57,8 +62,13 @@ namespace TetrisWorld
                 {
                     L1.Index              = newIndex3;
                     L1.transform.position = newPos3;
-                    L2.Index              = newIndex4;
-                    L2.transform.position = newPos4;
+
+                    if (L2)
+                    {
+                        L2.Index              = newIndex4;
+                        L2.transform.position = newPos4;
+                    }
+   
                 }
             }
         }
@@ -78,14 +88,20 @@ namespace TetrisWorld
                 {
                     L1.Index              = newIndex3;
                     L1.transform.position = newPos3;
-                    L2.Index              = newIndex4;
-                    L2.transform.position = newPos4;
+
+                    if (L2)
+                    {
+                        L2.Index              = newIndex4;
+                        L2.transform.position = newPos4;
+                    }
+          
                 }
             }
         }
 
         private bool CheckIndex(Vector2Int index, Letter letter)
         {
+            if (!letter) return false;
             return letter.Index == index;
         }
 
@@ -105,12 +121,15 @@ namespace TetrisWorld
                 {
                     L1.Index              = newIndex;
                     L1.transform.position = newPos;
-                    
-                    L2.Index              = newIndex1;
-                    L2.transform.position = newPos1;
+
+                    if (L2)
+                    {
+                        L2.Index              = newIndex1;
+                        L2.transform.position = newPos1;
+                    }
                 }
                 else
-                {
+                {   
                     Grid.AddLetterToGrid(L1);
                     Grid.AddLetterToGrid(L2);
                     Grid.CheckPattern(L1.Index);

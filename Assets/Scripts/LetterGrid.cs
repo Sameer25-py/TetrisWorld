@@ -107,23 +107,29 @@ namespace TetrisWorld
 
         public void InitializeBlockLetters(int letterCount = 2)
         {
-            int blockType = UnityEngine.Random.Range(0, 2);
+            int blockType = UnityEngine.Random.Range(0, 3);
             if (blockType == 0)
             {
                 BlockManager.InitializeBlockControllers(new Vector2Int(Rows - 1, 3), new Vector2Int(Rows - 1, 4), InitialPosition,
                     InitialPositionRight, 0);
             }
 
-            else
+            else if(blockType == 1)
             {
                 BlockManager.InitializeBlockControllers(new Vector2Int(Rows - 2, 3), new Vector2Int(Rows - 1, 3),
                     InitialPositionDown,
                     InitialPosition, 1);
             }
+            else
+            {
+                BlockManager.InitializeBlockControllers(new Vector2Int(Rows - 1, 3), new Vector2Int(Rows - 1, 4), InitialPosition,
+                    InitialPositionRight, 2);
+            }
         }
 
         public (Vector2, Vector2Int) GetLeft(Letter letter)
         {
+            if (!letter) return new();
             Vector2Int index = letter.Index;
             Vector2Int newIndex = new Vector2Int(index.x, index.y - 1 >= 0 && !Grid[index.x, index.y - 1]
                 .Letter
@@ -136,6 +142,7 @@ namespace TetrisWorld
 
         public (Vector2, Vector2Int) GetRight(Letter letter)
         {
+            if (!letter) return new();
             Vector2Int index = letter.Index;
             Vector2Int newIndex = new Vector2Int(index.x, index.y + 1 < Columns && !Grid[index.x, index.y + 1]
                 .Letter
@@ -148,6 +155,7 @@ namespace TetrisWorld
 
         public (Vector2, Vector2Int) GetDown(Letter letter)
         {
+            if (!letter) return new();
             Vector2Int index = letter.Index;
             Vector2Int newIndex = new Vector2Int(index.x - 1 >= 0 && !Grid[index.x - 1, index.y]
                 .Letter
@@ -281,6 +289,7 @@ namespace TetrisWorld
 
         public void AddLetterToGrid(Letter letter)
         {
+            if (!letter) return;
             Vector2Int index = letter.Index;
             if ((index.x < Rows && index.x >= 0) && (index.y < Columns && index.y >= 0) && !Grid[index.x, index.y]
                     .Letter)
